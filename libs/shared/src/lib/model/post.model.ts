@@ -1,8 +1,8 @@
 import { Category } from './category.model';
+import { Model } from './model';
 import { User } from './user.model';
 
-export interface Post {
-  uuid: string;
+export interface Post extends Model {
   title: string;
   content: string;
 

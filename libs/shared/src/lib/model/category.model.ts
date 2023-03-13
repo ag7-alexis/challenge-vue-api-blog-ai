@@ -1,5 +1,6 @@
-export interface Category {
-  uuid: string;
+import { Model } from './model';
+
+export interface Category extends Model {
   name: string;
   slug: string;
 }
