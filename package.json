@@ -18,7 +18,8 @@
     "rxjs": "^7.0.0",
     "tslib": "^2.3.0",
     "vue": "^3.2.0",
-    "vue-router": "^4.1.0"
+    "vue-router": "^4.1.0",
+    "vuetify": "^3.1.8"
   },
   "devDependencies": {
     "@nestjs/schematics": "^9.0.0",
