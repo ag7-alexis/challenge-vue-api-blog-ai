@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <h1 class="title">CHATBLOG</h1>
+    <router-link to="/" class="title">CHATBLOG</router-link>
     <div class="nav">
       <router-link to="/">Accueil</router-link>
       <router-link to="/articles">Articles</router-link>
@@ -8,7 +8,7 @@
       <router-link to="/login" class="button">Se connecter</router-link>
     </div>
   </div>
-  <router-view />
+  <router-view class="router-view" />
 </template>
 
 <style lang="scss">
@@ -27,38 +27,45 @@
   display: flex;
   justify-content: space-around;
   vertical-align: middle;
+  position: fixed;
+  width: 100%;
+  box-shadow: 0px 5px 40px grey;
 }
 
 .nav {
-  padding: 30px;
+  padding: 20px;
   display: flex;
   justify-content: space-around;
   gap: 60px;
-  font-weight: 100;
-  font-style: thin;
 
   a {
-    font-weight: bold;
     color: #ffffff;
     text-decoration: none;
+    margin: auto;
 
     &.router-link-exact-active {
       color: #3BCBFF;
     }
   }
+
+  a.button {
+    color: #000000;
+    background-color: #3BCBFF;
+    border-radius: 5px;
+    padding: 7px 20px;
+  }
 }
 
-nav.router-link-active {
-  background-color: red;
+.router-view {
+  padding-top: 100px;
 }
 
 .title {
   margin: auto 0px;
-}
-
-.button {
-  padding: 0px 10px;
-  background-color: red;
-  color: #3BCBFF;
+  text-decoration: none;
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+  color: #ffffff;
 }
 </style>
