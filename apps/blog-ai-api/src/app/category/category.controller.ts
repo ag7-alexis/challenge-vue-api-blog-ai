@@ -4,26 +4,27 @@ import {
   JwtAuthGuard,
 } from '@challenge-vue-api-blog-ai/shared-nest';
 import {
-  All,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('category')
 export class CategoryController {
   constructor(private readonly service: CategoryService) {}
 
   @Get('')
   @AllowUnauthorizedRequest()
-  findAll() {
-    return this.service.retrieve();
+  findAll(@Query('page') page: number = 0) {
+    return this.service.retrieve(page);
   }
 
   @Get(':uuid')
@@ -40,5 +41,10 @@ export class CategoryController {
   @Put(':uuid')
   edit(@Param('uuid') uuid: string, @Body() categoryCandidate) {
     return this.service.update(uuid, categoryCandidate);
+  }
+
+  @Delete(':uuid')
+  delete(@Param('uuid') uuid: string) {
+    return this.service.delete(uuid);
   }
 }
