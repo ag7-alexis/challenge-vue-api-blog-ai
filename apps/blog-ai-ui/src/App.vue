@@ -8,6 +8,8 @@
 import { User } from '@challenge-vue-api-blog-ai/shared';
 import axios from 'axios';
 import { defineComponent, ref } from 'vue';
+import Navbar from '../src/components/Navbar.vue';
+import NavbarAdmin from '../src/components/Admin/Navbar.vue';
 
 interface ViewContext {
   user: User | undefined;
@@ -19,8 +21,12 @@ export default defineComponent({
   data(): ViewContext {
     return {
       user: undefined,
-      admin: true
+      admin: false
     };
+  },
+  components: {
+    Navbar,
+    NavbarAdmin
   },
   methods: {
     async UserInfo() {
