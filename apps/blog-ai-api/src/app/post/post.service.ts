@@ -1,6 +1,7 @@
 import {
   absent,
   Category,
+  Pagination,
   Post,
   present,
 } from '@challenge-vue-api-blog-ai/shared';
@@ -20,8 +21,12 @@ export class PostService {
     return post;
   }
 
-  retrieve(): Post[] {
-    return this.storage.retrieveBy<Post>('post', {});
+  retrieve(page: number = 0): Pagination<Post> {
+    return this.storage.retrieveBy<Post>('post', {}, page);
+  }
+
+  retrieveInsideCategory(uuid: string): Pagination<Post> {
+    return this.storage.retrieveBy<Post>('post', { categoryUuid: uuid });
   }
 
   create(postCandidate: Partial<Post>): Post {
@@ -53,5 +58,14 @@ export class PostService {
       category,
       uuid: post.uuid,
     } as Post);
+  }
+
+  delete(uuid: string): Pagination<Post> {
+    const { models, deleted } = this.storage.deleteByUuid<Post>('post', uuid);
+    if (false === deleted) {
+      throw new NotFoundException();
+    }
+
+    return models;
   }
 }

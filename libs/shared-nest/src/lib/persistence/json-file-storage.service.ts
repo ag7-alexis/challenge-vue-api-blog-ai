@@ -1,4 +1,4 @@
-import { Model } from '@challenge-vue-api-blog-ai/shared';
+import { Model, Pagination } from '@challenge-vue-api-blog-ai/shared';
 import { Injectable } from '@nestjs/common';
 import * as jsonfile from 'jsonfile';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class JsonFileStorageService {
   private readonly options = { spaces: 2 };
+  private readonly itemPerPage = 10;
   constructor(private readonly filePath: string) {}
 
   retrieveOneBy<T extends Model>(type: string, filter: Partial<T>): T {
@@ -19,15 +20,22 @@ export class JsonFileStorageService {
     );
   }
 
-  retrieveBy<T extends Model>(type: string, filter: Partial<T>): T[] {
+  retrieveBy<T extends Model>(
+    type: string,
+    filter: Partial<T>,
+    page: number = 0
+  ): Pagination<T> {
     const json = jsonfile.readFileSync(this.filePath);
     const models: T[] = json[type];
     if (Object.keys(filter).length === 0) {
-      return models;
+      return this.paginate(models, page);
     }
-    return models.filter((m) =>
+
+    const filteredModels = models.filter((m) =>
       Object.entries(filter).every(([key, value]) => m[key] === value)
     );
+
+    return this.paginate(filteredModels, page);
   }
 
   upsertOne<T extends Model>(type: string, modelCandidate: T) {
@@ -53,5 +61,38 @@ export class JsonFileStorageService {
     );
 
     return modelCandidate;
+  }
+
+  deleteByUuid<T extends Model>(
+    type: string,
+    uuid: string
+  ): { models: Pagination<T>; deleted: boolean } {
+    const json = jsonfile.readFileSync(this.filePath);
+    const models: T[] = json[type];
+    const filterdModels = models.filter((m) => m.uuid !== uuid);
+    jsonfile.writeFileSync(
+      this.filePath,
+      {
+        ...json,
+        [type]: filterdModels,
+      },
+      this.options
+    );
+
+    return {
+      models: this.paginate(filterdModels, 0),
+      deleted: filterdModels.length < models.length,
+    };
+  }
+
+  private paginate<T>(models: T[], page: number) {
+    const data = models.splice(page * this.itemPerPage, this.itemPerPage);
+    return Pagination.fromValues({
+      data,
+      count: data.length,
+      pageCount: Math.ceil(models.length / this.itemPerPage),
+      page,
+      total: models.length,
+    });
   }
 }

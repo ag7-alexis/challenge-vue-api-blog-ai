@@ -1,4 +1,9 @@
-import { absent, Category, present } from '@challenge-vue-api-blog-ai/shared';
+import {
+  absent,
+  Category,
+  Pagination,
+  present,
+} from '@challenge-vue-api-blog-ai/shared';
 import { JsonFileStorageService } from '@challenge-vue-api-blog-ai/shared-nest';
 import {
   ConflictException,
@@ -19,8 +24,8 @@ export class CategoryService {
     return category;
   }
 
-  retrieve(): Category[] {
-    return this.storage.retrieveBy<Category>('category', {});
+  retrieve(page: number = 0): Pagination<Category> {
+    return this.storage.retrieveBy<Category>('category', {}, page);
   }
 
   create(categoryCandidate: Partial<Category>) {
@@ -60,5 +65,17 @@ export class CategoryService {
       trim: true,
       replacement: '-',
     });
+  }
+
+  delete(uuid: string): Pagination<Category> {
+    const { models, deleted } = this.storage.deleteByUuid<Category>(
+      'category',
+      uuid
+    );
+    if (false === deleted) {
+      throw new NotFoundException();
+    }
+
+    return models;
   }
 }
