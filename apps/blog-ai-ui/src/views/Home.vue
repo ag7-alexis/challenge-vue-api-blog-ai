@@ -11,7 +11,7 @@
         sm="6"
       >
 
-      <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" :uuid="item.uuid" />
+      <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" :uuid="item.uuid" :thumbnail="item.thumnail" />
 
    
     </v-col>
@@ -51,7 +51,7 @@ export default defineComponent({
           isDataLoading.value=false
       }
       this.articles = data
-      console.log(data);
+      console.log(data[2].thumnail);
     },
   },
   async mounted() {

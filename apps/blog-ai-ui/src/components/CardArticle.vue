@@ -6,6 +6,11 @@
       class="mx-auto rounded-lg"
       max-width="344"
     >
+    <v-img
+      :src="thumbnail"
+      height="200px"
+      cover
+    ></v-img>
       <v-card-text>
         <p class="text-h5 text--primary d-inline">
           {{ title }}
@@ -17,7 +22,7 @@
           inline
         ></v-badge>
         <div class="text--primary text-left mt-8">
-         {{ content  }}
+         {{ content.substring(0,250)+".." }}
         </div>
       </v-card-text>
       <v-card-actions class="d-inline">
@@ -40,6 +45,7 @@
       status: String,
       categoryName: String,
       uuid: String,
+      thumbnail: String,
     },
   });
   
