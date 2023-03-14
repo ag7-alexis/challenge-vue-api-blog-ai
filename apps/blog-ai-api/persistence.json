@@ -49,6 +49,11 @@
       "uuid": "3cb73b6a-58b5-4d7d-a469-7ccfe520a502",
       "username": "mathieu",
       "password": "$2b$10$4164HZWKUGrvJOe.ntPrIuv07H2yCnHRgHWSJ94gT/4.VOWQkZrNu"
+    },
+    {
+      "uuid": "04490e79-5b07-4e5a-a0a0-bb17c550eadb",
+      "username": "test",
+      "password": "$2b$10$UV4PBs5h1ICgcmcntnZ4TeU5BFydRpneA0s45bpvCwuL1dtsrZq92"
     }
   ]
 }

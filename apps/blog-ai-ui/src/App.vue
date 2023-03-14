@@ -31,7 +31,7 @@ export default defineComponent({
     async UserInfo() {
       const isDataLoading = ref(true)
 
-      const userInfo = await axios.get<User>("http://localhost:3333/api/auth")
+      const userInfo = await axios.get<User>("/api/auth")
       const { data, status } = userInfo // object destructuring FTW!
       if (status === 200) {
         isDataLoading.value = false

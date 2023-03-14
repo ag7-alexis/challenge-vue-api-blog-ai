@@ -40,7 +40,7 @@ export default defineComponent({
       this.loading = true;
       try {
         console.log(this.username);
-        const response = await axios.post('http://localhost:3333/api/auth/login', {
+        const response = await axios.post("/api/auth/login", {
           username: this.username,
           password: this.password,
         }, {

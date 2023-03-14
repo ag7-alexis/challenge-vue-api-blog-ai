@@ -43,7 +43,7 @@ export default defineComponent({
   },
   methods: {
     async LastArticles() {
-      const API_ALL_POST = 'http://localhost:3333/api/post'
+      const API_ALL_POST = '/api/post'
       const isDataLoading = ref(true)
 
       const LastArticles = await axios.get<Pagination<Post>>(API_ALL_POST)

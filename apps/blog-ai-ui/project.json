@@ -27,7 +27,15 @@
     "serve": {
       "executor": "@nx-plus/vue:dev-server",
       "options": {
-        "browserTarget": "blog-ai-ui:build"
+        "browserTarget": "blog-ai-ui:build",
+        "devServer": {
+          "proxy": {
+            "^/api": {
+              "target": "http://localhost:3333",
+              "changeOrigin": true
+            }
+          }
+        }
       },
       "configurations": {
         "production": {
