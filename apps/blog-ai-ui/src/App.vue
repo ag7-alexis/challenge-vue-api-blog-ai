@@ -1,23 +1,19 @@
 <template>
-  <div class="header">
-    <h1 class="title">CHATBLOG</h1>
-    <div class="nav">
-      <router-link to="/">Accueil</router-link>
-      <router-link to="/articles">Articles</router-link>
-      <router-link to="/generate">Générer</router-link>
-      <router-link to="/login" class="button">Se connecter</router-link>
-    </div>
-  </div>
-  <router-view />
+  <Navbar v-if="!admin" />
+  <NavbarAdmin v-if="admin" />
+  <router-view class="router-view" />
 </template>
 
 <script lang="ts">
 import { User } from '@challenge-vue-api-blog-ai/shared';
 import axios from 'axios';
 import { defineComponent, ref } from 'vue';
+import Navbar from '../src/components/Navbar.vue';
+import NavbarAdmin from '../src/components/Admin/Navbar.vue';
 
 interface ViewContext {
   user: User | undefined;
+  admin: boolean
 }
 
 export default defineComponent({
@@ -25,7 +21,12 @@ export default defineComponent({
   data(): ViewContext {
     return {
       user: undefined,
+      admin: false
     };
+  },
+  components: {
+    Navbar,
+    NavbarAdmin
   },
   methods: {
     async UserInfo() {
@@ -56,43 +57,7 @@ export default defineComponent({
   color: #ffffff;
 }
 
-.header {
-  background-color: #494949;
-  display: flex;
-  justify-content: space-around;
-  vertical-align: middle;
-}
-
-.nav {
-  padding: 30px;
-  display: flex;
-  justify-content: space-around;
-  gap: 60px;
-  font-weight: 100;
-  font-style: thin;
-
-  a {
-    font-weight: bold;
-    color: #ffffff;
-    text-decoration: none;
-
-    &.router-link-exact-active {
-      color: #3BCBFF;
-    }
-  }
-}
-
-nav.router-link-active {
-  background-color: red;
-}
-
-.title {
-  margin: auto 0px;
-}
-
-.button {
-  padding: 0px 10px;
-  background-color: red;
-  color: #3BCBFF;
+.router-view {
+  padding-top: 100px;
 }
 </style>
