@@ -39,7 +39,9 @@
         <span>13/03</span>
       </v-card-actions>  
       <v-card-actions class="d-inline">
-        <RouterLink  :to="{name:'articlesDetails',params:{uuid}}">Lire la suite</RouterLink>
+        <RouterLink v-if="!admin" :to="{name:'articlesDetails',params:{uuid}}">Lire la suite</RouterLink>
+        <RouterLink v-if="admin" :to="{name:'editArticle',params:{uuid}}">Modifier</RouterLink>
+        <RouterLink v-if="admin" :to="{name:'articlesDetails',params:{uuid}}">Supprimer</RouterLink>
       </v-card-actions>
     </v-card>
   </template>
@@ -57,6 +59,11 @@
       uuid: String,
       thumbnail: String,
     },
+    data() {
+      return {
+        admin: true
+      }
+    }
   });
   
   </script>

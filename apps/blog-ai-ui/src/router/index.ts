@@ -4,6 +4,7 @@ import Articles from '../views/Articles.vue'
 import Generate from '../views/Generate.vue'
 import Login from '../views/Login.vue'
 import ArticlesDetails from '../views/ArticlesDetails.vue'
+import EditArticle from '../views/Admin/EditArticle.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/articles/:uuid',
     name: 'articlesDetails',
     component: ArticlesDetails
+  },
+  {
+    path: '/articles/edit/:uuid',
+    name: 'editArticle',
+    component: EditArticle
   }
   // {
   //   path: '/generer',

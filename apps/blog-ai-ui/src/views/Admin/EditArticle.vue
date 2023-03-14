@@ -1,35 +1,17 @@
 <template>
-  <div class="articles">
-
-    <AllArticles />
-      <v-container>
-        <v-row>
-          <v-col
-            v-for="item in articles"
-            :key="item.uuid"
-            cols="12"
-            sm="6"
-          >
-
-          <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" :uuid="item.uuid" :thumbnail="item.thumnail" />
-
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+    <div>
+        <p>test</p>
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent,ref } from 'vue';
-import CardArticle from '../components/CardArticle.vue';
-import AllArticles from '../components/AllArticles.vue';
+import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 
 export default defineComponent({
-  name: 'Articles',
+  name: 'EditArticles',
   components: {
-    CardArticle,
-    AllArticles
+    
   },
   data() {
     return {
@@ -53,5 +35,8 @@ export default defineComponent({
   async mounted() {
             await this.AllArticles()
   },
-});
+})
 </script>
+
+<style>
+</style>
