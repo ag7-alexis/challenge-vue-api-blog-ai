@@ -5,24 +5,28 @@
     <v-container>
     <v-row>
       <v-col
-        v-for="n in 4"
-        :key="n"
+        v-for="item in articles"
+        :key="item.uuid"
         cols="12"
         sm="6"
       >
 
-      <CardArticle />
+      <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" :uuid="item.uuid" :thumbnail="item.thumnail" />
+
+   
     </v-col>
     </v-row>
     </v-container>
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
+<script lang="ts">
+import { defineComponent, ref} from 'vue';
 import BannerFront from '../components/BannerFront.vue';
 import LastArticles from '../components/LastArticles.vue';
 import CardArticle from '../components/CardArticle.vue';
+import axios from 'axios';
+
 
 export default defineComponent({
   name: 'Home',
@@ -31,5 +35,27 @@ export default defineComponent({
     LastArticles,
     CardArticle,
   },
+  data() {
+    return {
+      articles: [],
+    };
+  },
+  methods: {
+    async LastArticles() {
+      const API_ALL_POST = 'http://localhost:3333/api/post'
+      const isDataLoading = ref(true)
+
+      const LastArticles = await axios.get(API_ALL_POST)
+      const {data,status} = LastArticles // object destructuring FTW!
+      if(status===200){
+          isDataLoading.value=false
+      }
+      this.articles = data
+      console.log(data);
+    },
+  },
+  async mounted() {
+            await this.LastArticles()
+  }
 });
 </script>
