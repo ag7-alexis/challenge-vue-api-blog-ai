@@ -51,7 +51,7 @@ export default defineComponent({
           isDataLoading.value=false
       }
       this.articles = data
-      console.log(data[2].thumnail);
+      console.log(data);
     },
   },
   async mounted() {

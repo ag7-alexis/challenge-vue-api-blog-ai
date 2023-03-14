@@ -10,6 +10,11 @@
             </p>
         </div>
         <v-container class="text-black text-left mt-8 mb-8">
+
+            <div class="text-center">
+                <img :src="articles.thumnail" alt="thumbnail" class="mb-8 w-50" />
+            </div>
+        
             
             {{ articles.content  }}
         </v-container>

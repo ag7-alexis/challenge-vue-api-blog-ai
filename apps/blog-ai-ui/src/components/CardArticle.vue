@@ -10,19 +10,29 @@
       :src="thumbnail"
       height="200px"
       cover
-    ></v-img>
-      <v-card-text>
-        <p class="text-h5 text--primary d-inline">
-          {{ title }}
-        </p>
-        <v-badge
-          class="d-inline"
+    >
+    <v-toolbar
+            color="rgba(0, 0, 0, 0)"
+            
+          >
+
+            <v-badge
+          class="d-inline ml-5"
           color="error"
           :content="categoryName"
           inline
         ></v-badge>
+
+          </v-toolbar>
+    
+    
+    </v-img>
+      <v-card-text>
+        <p class="text-h5 text--primary d-inline">
+          {{ title }}
+        </p>
         <div class="text--primary text-left mt-8">
-         {{ content.substring(0,250)+".." }}
+         {{ content.substring(0,200)+".." }}
         </div>
       </v-card-text>
       <v-card-actions class="d-inline">
