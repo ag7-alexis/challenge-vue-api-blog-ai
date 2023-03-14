@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('category')
 export class CategoryController {
   constructor(private readonly service: CategoryService) {}
