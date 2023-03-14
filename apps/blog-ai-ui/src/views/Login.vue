@@ -5,24 +5,11 @@
       <v-alert class="mt-4 mb-4" v-if="error" text="Nom d'utilisateur ou mot de passe incorrect"></v-alert>
 
       <v-form ref="form" @submit.prevent="login">
-        <v-text-field
-          v-model="username"
-          label="Nom d'utilisateur"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="password"
-          label="Mot de passe"
-          required
-        ></v-text-field>
+        <v-text-field v-model="username" label="Nom d'utilisateur" required></v-text-field>
+        <v-text-field v-model="password" label="Mot de passe" required></v-text-field>
 
         <div class="d-flex flex-column">
-          <v-btn
-            color="success"
-            class="mt-4"
-            block
-            @click="login"
-          >
+          <v-btn color="success" class="mt-4" block @click="login">
             S'identifier
           </v-btn>
 
@@ -57,11 +44,12 @@ export default defineComponent({
           username: this.username,
           password: this.password,
         }, {
-        headers: {
-          'Accept': '*/*'
-        },
-        withCredentials: true
-    });
+          headers: {
+            'Accept': '*/*',
+            "Access-Control-Allow-Credentials": true
+          },
+          withCredentials: true
+        });
 
       } catch (error) {
         this.error = error.message;

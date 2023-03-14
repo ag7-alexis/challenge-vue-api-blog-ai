@@ -5,7 +5,7 @@ import Generate from '../views/Generate.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ArticlesDetails from '../views/ArticlesDetails.vue'
-import EditArticle from '../views/Admin/EditArticle.vue'
+import EditArticle from '../views/Admin/EditArticles.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
