@@ -1,11 +1,43 @@
-import { Module } from '@nestjs/common';
+import {
+  JsonFileStorageService,
+  LoggerMiddleware,
+} from '@challenge-vue-api-blog-ai/shared-nest';
+import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { CategoryModule } from './category/category.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PostModule } from './post/post.module';
+import { AuthModule } from './auth/auth.module';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+@Global()
+@Module({
+  providers: [
+    {
+      provide: JsonFileStorageService,
+      useFactory: (configService: ConfigService) => {
+        return new JsonFileStorageService(
+          configService.getOrThrow('JSON_FILE_PATH')
+        );
+      },
+      inject: [ConfigService],
+    },
+  ],
+  exports: [JsonFileStorageService],
+})
+export class GlobalModule {}
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    GlobalModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    PostModule,
+    CategoryModule,
+    AuthModule,
+  ],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
