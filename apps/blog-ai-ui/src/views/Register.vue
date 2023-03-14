@@ -5,24 +5,11 @@
       <v-alert class="mt-4 mb-4" v-if="success" text="Inscription confirmée, vous êtes maintenant connecté"></v-alert>
 
       <v-form ref="form" @submit.prevent="register">
-        <v-text-field
-          v-model="username"
-          label="Nom d'utilisateur"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="password"
-          label="Mot de passe"
-          required
-        ></v-text-field>
+        <v-text-field v-model="username" label="Nom d'utilisateur" required></v-text-field>
+        <v-text-field v-model="password" label="Mot de passe" required></v-text-field>
 
         <div class="d-flex flex-column">
-          <v-btn
-            color="success"
-            class="mt-4"
-            block
-            @click="register"
-          >
+          <v-btn color="success" class="mt-4" block @click="register">
             S'enregistrer
           </v-btn>
 
@@ -41,9 +28,17 @@ import {
   User
 } from '@challenge-vue-api-blog-ai/shared';
 
+interface ViewContext {
+  username: string;
+  password: string;
+  error: any;
+  loading: boolean;
+  success: any
+}
+
 export default defineComponent({
   name: 'Register',
-  data() {
+  data(): ViewContext {
     return {
       username: '',
       password: '',
@@ -61,14 +56,15 @@ export default defineComponent({
           password: this.password,
         };
         const response = await axios.post<User>('http://localhost:3333/api/auth/register', userCandidate, {
-        headers: {
-          'Accept': '*/*'
-        },
-        withCredentials: true
+          headers: {
+            'Accept': '*/*',
+            "Access-Control-Allow-Credentials": true
+          },
+          withCredentials: true
 
-    });
+        });
         this.success = response.data;
-      } catch (error) {
+      } catch (error: any) {
         this.error = error.message;
         console.log(error);
       }
