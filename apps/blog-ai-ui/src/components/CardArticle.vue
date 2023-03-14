@@ -24,12 +24,7 @@
         <span>13/03</span>
       </v-card-actions>  
       <v-card-actions class="d-inline">
-        <v-btn
-          variant="text"
-          color="teal-accent-4"
-        >
-          Lire la suite
-        </v-btn>
+        <RouterLink  :to="{name:'articlesDetails',params:{uuid}}">Lire la suite</RouterLink>
       </v-card-actions>
     </v-card>
   </template>
@@ -44,6 +39,7 @@
       content: String,
       status: String,
       categoryName: String,
+      uuid: String,
     },
   });
   

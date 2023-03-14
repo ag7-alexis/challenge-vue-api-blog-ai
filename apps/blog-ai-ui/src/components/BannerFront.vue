@@ -1,5 +1,5 @@
 <template>
-  <div class="hello bg-indigo-lighten-2 pt-4 pb-4">
+  <div class="hello bg-indigo-lighten-2 pt-4 pb-4 text-center">
     <img alt="Vue logo" src="../assets/logo_v2.png" :width="250" class="mt-10 mb-10" />
     <h1>{{ msg }}</h1>
 
@@ -23,6 +23,7 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
 h3 {
   margin: 40px 0 0;
 }

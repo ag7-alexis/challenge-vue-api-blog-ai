@@ -11,7 +11,7 @@
         sm="6"
       >
 
-      <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" />
+      <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" :uuid="item.uuid" />
 
    
     </v-col>
@@ -56,6 +56,6 @@ export default defineComponent({
   },
   async mounted() {
             await this.LastArticles()
-        }
+  }
 });
 </script>
