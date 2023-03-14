@@ -1,3 +1,6 @@
+
+
+
 <template>
     <v-card
       class="mx-auto rounded-lg"
@@ -5,17 +8,16 @@
     >
       <v-card-text>
         <p class="text-h5 text--primary d-inline">
-          el·ee·mos·y·nar·y
+          {{ title }}
         </p>
         <v-badge
           class="d-inline"
           color="error"
-          content="Catégorie"
+          :content="categoryName"
           inline
         ></v-badge>
         <div class="text--primary text-left mt-8">
-          relating to or dependent on charity; charitable.<br>
-          "an eleemosynary educational institution."
+         {{ content  }}
         </div>
       </v-card-text>
       <v-card-actions class="d-inline">
@@ -34,11 +36,15 @@
 
   <script lang="ts">
   import { defineComponent } from 'vue';
-  
+
   export default defineComponent({
     name: 'CardArticle',
     props: {
-      msg: String,
+      title: String,
+      content: String,
+      status: String,
+      categoryName: String,
     },
   });
+  
   </script>
