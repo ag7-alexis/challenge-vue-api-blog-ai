@@ -26,7 +26,9 @@
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-
+import {
+  Post
+} from '@challenge-vue-api-blog-ai/shared';
 
 export default defineComponent({
 name: 'ArticlesDetails',
@@ -41,7 +43,7 @@ async LastArticles() {
     const isDataLoading = ref(true)
     const route = useRoute()
 
-    const LastArticles = await axios.get(API_ALL_POST+'/'+route.params.uuid)
+    const LastArticles = await axios.get<Post>(API_ALL_POST+'/'+route.params.uuid)
     const {data,status} = LastArticles // object destructuring FTW!
     if(status===200){
         isDataLoading.value=false

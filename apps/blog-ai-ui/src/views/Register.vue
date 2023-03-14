@@ -34,9 +34,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import {
+  User
+} from '@challenge-vue-api-blog-ai/shared';
 
 export default defineComponent({
   name: 'Register',
@@ -53,10 +56,11 @@ export default defineComponent({
     async register() {
       this.loading = true;
       try {
-        const response = await axios.post('http://localhost:3333/api/auth/register', {
+        const userCandidate: Partial<User> = {
           username: this.username,
           password: this.password,
-        }, {
+        };
+        const response = await axios.post<User>('http://localhost:3333/api/auth/register', userCandidate, {
         headers: {
           'Accept': '*/*'
         },
