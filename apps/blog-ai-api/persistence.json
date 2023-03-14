@@ -1,0 +1,22 @@
+{
+  "post": [],
+  "category": [
+    {
+      "uuid": "46762ed2-41a4-4970-b987-60cb0fa82a85",
+      "name": "Pornographique-teens",
+      "slug": "pornographique-teens"
+    },
+    {
+      "uuid": "2f2e6a8f-de2c-4fef-a8af-46e4061b67ec",
+      "name": "Test 132",
+      "slug": "test-132"
+    }
+  ],
+  "user": [
+    {
+      "uuid": "0e103201-be48-4925-be7b-9d3dde29ced4",
+      "username": "alexis2",
+      "password": "$2b$10$6q/HW1spetlS1NAUZ3aX7enm7KmWWQSRbneBTH4Wy91qzdJtoXO/u"
+    }
+  ]
+}
