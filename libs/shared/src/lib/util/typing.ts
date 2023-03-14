@@ -13,9 +13,25 @@ export type DeepPartial<T> =
       : T);
 
 export class Pagination<T> {
-  constructor(readonly count: number, readonly data: T[], readonly page: number, readonly pageCount: number, readonly total: number) {}
+  constructor(
+    readonly count: number,
+    readonly data: T[],
+    readonly page: number,
+    readonly pageCount: number,
+    readonly total: number
+  ) {}
   static empty() {
     return new Pagination(0, [], 0, 0, 0);
+  }
+
+  static fromValues<T>(values: Partial<Pagination<T>>) {
+    return new Pagination(
+      values.count ?? 0,
+      values.data ?? [],
+      values.page ?? 0,
+      values.pageCount ?? 0,
+      values.total ?? 0
+    );
   }
 }
 
