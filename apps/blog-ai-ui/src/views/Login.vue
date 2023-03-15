@@ -41,7 +41,6 @@ export default defineComponent({
     async login() {
       this.loading = true;
       try {
-        console.log(this.username);
         const response = await axios.post("/api/auth/login", {
           username: this.username,
           password: this.password,
@@ -53,6 +52,7 @@ export default defineComponent({
           withCredentials: true
         });
         this.success = response.data;
+        window.location.href = '/';
       } catch (error) {
         this.error = error.message;
         console.log(error);
