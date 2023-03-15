@@ -5,6 +5,7 @@
     <v-card
       class="mx-auto rounded-lg"
       max-width="344"
+      v-if="renderComponent"
     >
     <v-img
       :src="thumbnail"
@@ -31,7 +32,7 @@
         <p class="text-h5 text--primary d-inline">
           {{ title }} 
           <RouterLink v-if="isAuthenticated" :to="{name:'editArticle',params:{uuid}}"> <UilEdit   size="25px" class="trash text-teal-lighten-1 mr-3" /></RouterLink>
-        <RouterLink v-if="isAuthenticated" :to="{name:'articlesDetails',params:{uuid}}">    <UilTrash  size="25px" class="trash text-teal-lighten-1" /></RouterLink>
+          <UilTrash  @click="DeleteArticle(uuid)" size="25px" class="trash text-teal-lighten-1 hover-click" />
         </p>
         <div class="text--primary text-left mt-8">
          {{ content.substring(0,200)+".." }}
@@ -48,9 +49,10 @@
   </template>
 
   <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, nextTick } from 'vue';
   import { UserInfo } from '../auth';
   import { UilTrash, UilEdit  } from '@iconscout/vue-unicons';
+  import axios from 'axios';
 
   export default defineComponent({
     name: 'CardArticle',
@@ -70,14 +72,23 @@
       return {
         admin: true,
         isAuthenticated: false,
+        renderComponent: true,
       }
     },
     methods: {
     async UserConnected() {
-      // Vérifier si l'utilisateur est authentifié
       const authenticated = await UserInfo();
       if (authenticated) {
         this.isAuthenticated = true;
+      }
+    },
+    async DeleteArticle(uuid) {
+      const DeleteArticle = await axios.delete('/api/post/' + uuid)
+      const { data, status } = DeleteArticle // object destructuring FTW!
+      if (status === 200) {
+        this.renderComponent = true;
+        await nextTick();
+        this.renderComponent = false;
       }
     },
   },
@@ -87,3 +98,9 @@
   });
   
   </script>
+
+  <style>
+  .hover-click {
+    cursor: pointer;
+  }
+  </style>
