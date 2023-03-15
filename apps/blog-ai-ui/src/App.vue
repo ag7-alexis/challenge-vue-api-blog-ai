@@ -29,21 +29,7 @@ export default defineComponent({
     NavbarAdmin
   },
   methods: {
-    async UserInfo() {
-      const isDataLoading = ref(true)
-
-      const userInfo = await axios.get<User>("/api/auth")
-      const { data, status } = userInfo // object destructuring FTW!
-      if (status === 200) {
-        isDataLoading.value = false
-      }
-      this.user = data
-      console.log(data);
-    },
   },
-  async mounted() {
-    await this.UserInfo()
-  }
 });
 </script>
 <style lang="scss">

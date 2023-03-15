@@ -5,11 +5,37 @@
             <router-link to="/" class="button">Accueil</router-link>
             <router-link to="/articles" class="button">Articles</router-link>
             <!-- <router-link to="/generate" class="button">Générer</router-link> -->
-            <router-link to="/register" class="button-register">Créer un compte</router-link>
-            <router-link to="/login" class="button-login">Se connecter</router-link>
+            <router-link  v-if="!isAuthenticated" to="/register" class="button-register">Créer un compte</router-link>
+            <router-link v-if="!isAuthenticated" to="/login" class="button-login">Se connecter</router-link>
+            <router-link v-if="isAuthenticated" to="/login" class="button-login">Se déconnecter</router-link>
         </div>
     </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { UserInfo } from '../auth';
+
+export default defineComponent({
+  data() {
+    return {
+      isAuthenticated: false,
+    };
+  },
+  methods: {
+    async someMethod() {
+      // Vérifier si l'utilisateur est authentifié
+      const authenticated = await UserInfo();
+      if (authenticated) {
+        this.isAuthenticated = true;
+      }
+    },
+  },
+  async mounted() {
+    await this.someMethod()
+  }
+});
+</script>
 
 <style  lang="scss">
 .header {
