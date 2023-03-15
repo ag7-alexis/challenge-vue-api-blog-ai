@@ -1,15 +1,35 @@
 <template>
-    <div class="header">
-        <router-link to="/" class="title">CHATBLOG</router-link>
-        <div class="nav">
-            <router-link to="/" class="button">Accueil</router-link>
-            <router-link to="/articles" class="button">Articles</router-link>
-            <router-link to="/generate" class="button">Générer</router-link>
-            <router-link to="/categories" class="button">Categories</router-link>
-            <router-link to="/login" class="button-login">Se déconnecter</router-link>
-        </div>
+  <div class="header">
+    <router-link to="/" class="title">CHATBLOG</router-link>
+    <div class="nav">
+      <router-link to="/" class="button">Accueil</router-link>
+      <router-link to="/articles" class="button">Articles</router-link>
+      <router-link to="/generate" class="button">Générer</router-link>
+      <router-link to="/categories" class="button">Categories</router-link>
+
+      <button @click="logout" class="button-login">Se déconnecter</button>
     </div>
+  </div>
 </template>
+
+
+<script lang="ts">
+import axios from 'axios';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+
+  methods: {
+    async logout() {
+      await axios.get("/api/auth/logout");
+      window.location.href = '/';
+    }
+  },
+
+});
+</script>
+
+
 
 <style  lang="scss">
 .header {
