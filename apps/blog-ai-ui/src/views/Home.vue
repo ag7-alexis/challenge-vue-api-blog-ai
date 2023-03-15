@@ -47,7 +47,7 @@ export default defineComponent({
       const API_ALL_POST = '/api/post'
       const isDataLoading = ref(true)
 
-      const LastArticles = await axios.get<Pagination<Post>>(API_ALL_POST)
+      const LastArticles = await axios.get<Pagination<Post>>(API_ALL_POST,  { params: { status: "published" }})
       const { data, status } = LastArticles // object destructuring FTW!
       if (status === 200) {
         isDataLoading.value = false
