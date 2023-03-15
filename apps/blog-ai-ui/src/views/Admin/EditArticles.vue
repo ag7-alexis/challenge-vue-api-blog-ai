@@ -7,17 +7,20 @@
         <v-text-field v-model="title" label="titre" required></v-text-field>
 
         <div class="d-flex flex-row">
-          <v-btn color="success" class="mt-4" :disabled="title === ''" block @click="generateArticle">Générer un article</v-btn>
+          <v-btn color="success" class="mt-4" :disabled="title === ''" block @click="generateArticle">Générer un
+            article</v-btn>
         </div>
 
         <h3 class="text-black text-left mt-5">Article généré</h3>
         <v-textarea v-model="article" label="article" required></v-textarea>
 
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block @click="saveDraft">Enregistrer le brouillon</v-btn>
+          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
+            @click="saveDraft">Enregistrer le brouillon</v-btn>
         </div>
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block @click="editArticle">Appliquer les modifications</v-btn>
+          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
+            @click="editArticle">Appliquer les modifications</v-btn>
         </div>
       </v-form>
     </v-sheet>
@@ -25,10 +28,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, getCurrentInstance, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { Post } from '@challenge-vue-api-blog-ai/shared';
+import { absent, Post, present } from '@challenge-vue-api-blog-ai/shared';
+
+const route = useRoute();
+console.log(route)
 
 export default defineComponent({
   name: 'EditArticles',
@@ -50,7 +56,7 @@ export default defineComponent({
       const GetArticle = await axios.get<Post>('/api/post/' + route.params.uuid)
       const { data, status } = GetArticle // object destructuring FTW!
       if (status === 200) {
-          isDataLoading.value = false
+        isDataLoading.value = false
       }
       console.log(data);
       this.title = data.title
@@ -71,15 +77,15 @@ export default defineComponent({
       this.generating = false
     },
     async saveDraft() {
-      const route = await useRoute()
-      const response = await axios.put("/api/post/" + route.params.uuid, {
+
+      const response = await axios.put("/api/post/" + this.$route.params.uuid, {
         title: this.title,
         content: this.article,
         status: 'draft',
       })
       console.log("test");
       // try {
-        
+
       // } catch (error: any) {
       //   this.error = error.message;
       //   console.log(error);
@@ -87,8 +93,7 @@ export default defineComponent({
     },
     async editArticle() {
       try {
-        const route = useRoute()
-        const response = await axios.put("/api/post/" + route.params.uuid, {
+        const response = await axios.put("/api/post/" + this.$route.params.uuid, {
           title: this.title,
           content: this.article,
           status: 'published',
