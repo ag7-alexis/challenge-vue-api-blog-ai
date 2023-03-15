@@ -12,7 +12,7 @@
               max-width="300"
               block
             >
-          <v-list :item="item.name" block>  {{ item.name  }} <v-btn @click="deleteCategory(item.uuid)">Supprimer</v-btn> </v-list>
+          <v-list :item="item.name" block>  {{ item.name  }} <UilTrash  @click="deleteCategory(item.uuid)" size="25px" class="trash text-red-lighten-1 mr-3 hover-click" /></v-list>
           
         </v-card>
       </v-col>
@@ -52,9 +52,7 @@ import { useRoute } from 'vue-router';
 import {
 Category, Pagination,
 } from '@challenge-vue-api-blog-ai/shared';
-  import {
-    mdiDelete,
-  } from '@mdi/js'
+import { UilTrash, UilEdit  } from '@iconscout/vue-unicons';
 
 interface ViewContext {
   category: Pagination<Category> | undefined
@@ -65,9 +63,6 @@ interface ViewContext {
   error: any
   dialog: false,
   success: any
-  icons: {
-    mdiDelete: string
-  }
 }
 
 
@@ -83,10 +78,11 @@ export default defineComponent({
       error: null,
       success: null,
       dialog: false,
-      icons: {
-        mdiDelete,
-      },
       };
+  },
+  components: {
+      UilTrash,
+      UilEdit,
   },
   methods: {
       async GetCategory() {
@@ -136,3 +132,9 @@ export default defineComponent({
   }
 });
 </script>
+
+<style>
+  .hover-click {
+    cursor: pointer;
+  }
+</style>
