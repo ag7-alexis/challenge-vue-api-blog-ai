@@ -5,12 +5,18 @@ import {
   Post,
   present,
 } from '@challenge-vue-api-blog-ai/shared';
-import { JsonFileStorageService } from '@challenge-vue-api-blog-ai/shared-nest';
+import {
+  JsonFileStorageService,
+  OpenAiService,
+} from '@challenge-vue-api-blog-ai/shared-nest';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PostService {
-  constructor(private readonly storage: JsonFileStorageService) {}
+  constructor(
+    private readonly storage: JsonFileStorageService,
+    private readonly openAi: OpenAiService
+  ) {}
 
   retrieveOne(uuid: string): Post {
     const post = this.storage.retrieveOneBy<Post>('post', { uuid });
@@ -29,7 +35,7 @@ export class PostService {
     return this.storage.retrieveBy<Post>('post', { categoryUuid: uuid });
   }
 
-  create(postCandidate: Partial<Post>): Post {
+  async create(postCandidate: Partial<Post>): Promise<Post> {
     let category: Category | undefined = undefined;
 
     if (present(postCandidate.categoryUuid)) {
@@ -53,6 +59,7 @@ export class PostService {
         uuid: postCandidate.categoryUuid,
       });
     }
+
     return this.storage.upsertOne<Post>('post', {
       ...postCandidate,
       category,
@@ -67,5 +74,9 @@ export class PostService {
     }
 
     return models;
+  }
+
+  generateText(title: string) {
+    return this.openAi.generateText(title);
   }
 }

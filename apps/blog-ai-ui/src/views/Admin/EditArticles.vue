@@ -4,10 +4,10 @@
     <v-sheet width="600" class="mx-auto">
       <v-form ref="form" @submit.prevent="editArticle">
         <h3 class="text-black text-left mt-10">Titre de l'article</h3>
-        <v-text-field v-model="title" label="Entrer un titre" required></v-text-field>
+        <v-text-field v-model="title" label="titre" required></v-text-field>
 
         <div class="d-flex flex-row">
-          <v-btn color="success" class="mt-4" :disabled="title === ''" block @click="saveDraft">Générer un article</v-btn>
+          <v-btn color="success" class="mt-4" :disabled="title === ''" block @click="generateArticle">Générer un article</v-btn>
         </div>
 
         <h3 class="text-black text-left mt-5">Article généré</h3>
@@ -52,36 +52,39 @@ export default defineComponent({
       if (status === 200) {
           isDataLoading.value = false
       }
+      console.log(data);
       this.title = data.title
       this.article = data.content
-      console.log(data);
     },
-    // génération de l'article
     async generateArticle() {
+      // this.article = ''
       this.generating = true
       try {
-
+        const response = await axios.post("/api/post/generate-text", {
+          title: this.title
+        })
+        this.article = response.data
       } catch (error: any) {
         this.error = error.message
         console.log(error);
       }
       this.generating = false
     },
-    // enregistrement de l'article en brouillon
     async saveDraft() {
-      try {
-        const route = useRoute()
-        const response = await axios.put("/api/post/" + route.params.uuid, {
-          title: this.title,
-          content: this.article,
-          status: 'draft',
-        })
-      } catch (error: any) {
-        this.error = error.message;
-        console.log(error);
-      }
+      const route = await useRoute()
+      const response = await axios.put("/api/post/" + route.params.uuid, {
+        title: this.title,
+        content: this.article,
+        status: 'draft',
+      })
+      console.log("test");
+      // try {
+        
+      // } catch (error: any) {
+      //   this.error = error.message;
+      //   console.log(error);
+      // }
     },
-    // validation des modifications de l'article
     async editArticle() {
       try {
         const route = useRoute()
