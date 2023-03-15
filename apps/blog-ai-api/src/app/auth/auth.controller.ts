@@ -45,4 +45,14 @@ export class AuthController {
   ) {
     return this.service.login(res, userCandidate);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
+  logout(@Response({ passthrough: true }) res) {
+    res.clearCookie('accessToken', {
+      sameSite: 'strict',
+      httpOnly: true,
+    });
+    return true;
+  }
 }

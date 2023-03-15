@@ -23,8 +23,11 @@ export class PostController {
 
   @Get('')
   @AllowUnauthorizedRequest()
-  findAll(@Query('page') page: number = 0) {
-    return this.service.retrieve(page);
+  findAll(
+    @Query('page') page: number = 0,
+    @Query('status') status?: 'published' | 'draft'
+  ) {
+    return this.service.retrieve(page, status);
   }
 
   @Get(':uuid')
@@ -45,17 +48,21 @@ export class PostController {
 
   @Get('category/:uuid')
   @AllowUnauthorizedRequest()
-  findInCategory(@Param('uuid') uuid: string) {
-    return this.service.retrieveInsideCategory(uuid);
+  findInCategory(
+    @Param('uuid') uuid: string,
+    @Query('page') page: number = 0,
+    @Query('status') status?: 'published' | 'draft'
+  ) {
+    return this.service.retrieveInsideCategory(uuid, page, status);
   }
 
   @Delete(':uuid')
   delete(@Param('uuid') uuid: string) {
     return this.service.delete(uuid);
   }
-  
+
   @HttpPost('generate-text')
-  generateText(@Body() body: {title: string}) {
-    return this.service.generateText('Génère moi un article sur : '+ body.title);
+  generateText(@Body() body: { title: string }) {
+    return this.service.generateText(body.title);
   }
 }

@@ -27,12 +27,25 @@ export class PostService {
     return post;
   }
 
-  retrieve(page: number = 0): Pagination<Post> {
-    return this.storage.retrieveBy<Post>('post', {}, page);
+  retrieve(page: number = 0, status?: 'published' | 'draft'): Pagination<Post> {
+    let filter: Partial<Post> = {};
+    if (present(status)) {
+      filter = { status };
+    }
+    return this.storage.retrieveBy<Post>('post', filter, page);
   }
 
-  retrieveInsideCategory(uuid: string): Pagination<Post> {
-    return this.storage.retrieveBy<Post>('post', { categoryUuid: uuid });
+  retrieveInsideCategory(
+    uuid: string,
+    page: number = 0,
+    status?: 'published' | 'draft'
+  ): Pagination<Post> {
+    let filter: Partial<Post> = { categoryUuid: uuid };
+    if (present(status)) {
+      filter = { ...filter, status };
+    }
+
+    return this.storage.retrieveBy<Post>('post', filter, page);
   }
 
   async create(postCandidate: Partial<Post>): Promise<Post> {
@@ -79,3 +92,4 @@ export class PostService {
   generateText(title: string) {
     return this.openAi.generateText(title);
   }
+}

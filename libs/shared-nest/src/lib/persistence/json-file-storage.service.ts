@@ -3,13 +3,39 @@ import { Injectable } from '@nestjs/common';
 import * as jsonfile from 'jsonfile';
 import { v4 as uuidv4 } from 'uuid';
 
+export abstract class JsonFileStorageService {
+  abstract retrieveOneBy<T extends Model>(
+    type: string,
+    filter: Partial<T>
+  ): T | undefined;
+  abstract retrieveBy<T extends Model>(
+    type: string,
+    filter: Partial<T>,
+    page: number
+  ): Pagination<T>;
+  abstract retrieveAllBy<T extends Model>(
+    type: string,
+    filter: Partial<T>
+  ): T[];
+  abstract upsertOne<T extends Model>(type: string, modelCandidate: T): T;
+  abstract deleteByUuid<T extends Model>(
+    type: string,
+    uuid: string
+  ): { models: Pagination<T>; deleted: boolean };
+}
+
 @Injectable()
-export class JsonFileStorageService {
+export class JsonFileStorageServiceImpl extends JsonFileStorageService {
   private readonly options = { spaces: 2 };
   private readonly itemPerPage = 10;
-  constructor(private readonly filePath: string) {}
+  constructor(private readonly filePath: string) {
+    super();
+  }
 
-  retrieveOneBy<T extends Model>(type: string, filter: Partial<T>): T {
+  retrieveOneBy<T extends Model>(
+    type: string,
+    filter: Partial<T>
+  ): T | undefined {
     const json = jsonfile.readFileSync(this.filePath);
     const models: T[] = json[type];
     if (Object.keys(filter).length === 0) {
@@ -38,7 +64,21 @@ export class JsonFileStorageService {
     return this.paginate(filteredModels, page);
   }
 
-  upsertOne<T extends Model>(type: string, modelCandidate: T) {
+  retrieveAllBy<T extends Model>(type: string, filter: Partial<T>): T[] {
+    const json = jsonfile.readFileSync(this.filePath);
+    const models: T[] = json[type];
+    if (Object.keys(filter).length === 0) {
+      return models;
+    }
+
+    const filteredModels = models.filter((m) =>
+      Object.entries(filter).every(([key, value]) => m[key] === value)
+    );
+
+    return filteredModels;
+  }
+
+  upsertOne<T extends Model>(type: string, modelCandidate: T): T {
     const json = jsonfile.readFileSync(this.filePath);
     const models: T[] = json[type];
 

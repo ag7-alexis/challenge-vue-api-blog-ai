@@ -1,5 +1,6 @@
 import {
   JsonFileStorageService,
+  JsonFileStorageServiceImpl,
   LoggerMiddleware,
 } from '@challenge-vue-api-blog-ai/shared-nest';
 import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
@@ -14,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
     {
       provide: JsonFileStorageService,
       useFactory: (configService: ConfigService) => {
-        return new JsonFileStorageService(
+        return new JsonFileStorageServiceImpl(
           configService.getOrThrow('JSON_FILE_PATH')
         );
       },
