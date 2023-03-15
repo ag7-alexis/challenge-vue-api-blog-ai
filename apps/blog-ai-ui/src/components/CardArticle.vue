@@ -29,7 +29,9 @@
     </v-img>
       <v-card-text>
         <p class="text-h5 text--primary d-inline">
-          {{ title }}
+          {{ title }} 
+          <RouterLink v-if="isAuthenticated" :to="{name:'editArticle',params:{uuid}}"> <UilEdit   size="25px" class="trash text-teal-lighten-1 mr-3" /></RouterLink>
+        <RouterLink v-if="isAuthenticated" :to="{name:'articlesDetails',params:{uuid}}">    <UilTrash  size="25px" class="trash text-teal-lighten-1" /></RouterLink>
         </p>
         <div class="text--primary text-left mt-8">
          {{ content.substring(0,200)+".." }}
@@ -40,8 +42,6 @@
       </v-card-actions>  
       <v-card-actions class="d-inline">
         <RouterLink :to="{name:'articlesDetails',params:{uuid}}">Lire la suite</RouterLink>
-        <RouterLink v-if="isAuthenticated" :to="{name:'editArticle',params:{uuid}}"> <UilEdit   size="30px" class="trash text-red" /></RouterLink>
-        <RouterLink v-if="isAuthenticated" :to="{name:'articlesDetails',params:{uuid}}">    <UilTrash  size="30px" class="trash text-red" /></RouterLink>
       </v-card-actions>
     </v-card>
     
