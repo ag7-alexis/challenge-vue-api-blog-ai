@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { PostService } from './post.service';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('post')
 export class PostController {
   constructor(private readonly service: PostService) {}
@@ -52,5 +52,10 @@ export class PostController {
   @Delete(':uuid')
   delete(@Param('uuid') uuid: string) {
     return this.service.delete(uuid);
+  }
+  
+  @HttpPost('generate-text')
+  generateText(@Body() body: {title: string}) {
+    return this.service.generateText('Génère moi un article sur : '+ body.title);
   }
 }
