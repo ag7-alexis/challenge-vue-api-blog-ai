@@ -79,6 +79,9 @@ export default defineComponent({
       dialog: false,
       };
   },
+  // setup: {
+  //   const route = useRoute()
+  // },
   methods: {
       async GetCategory() {
           const isDataLoading = ref(true)

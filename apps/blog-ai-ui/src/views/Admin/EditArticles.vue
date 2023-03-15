@@ -71,19 +71,19 @@ export default defineComponent({
       this.generating = false
     },
     async saveDraft() {
-      const route = await useRoute()
-      const response = await axios.put("/api/post/" + route.params.uuid, {
-        title: this.title,
-        content: this.article,
-        status: 'draft',
-      })
-      console.log("test");
-      // try {
+      try {
+        const route = await useRoute()
+        const response = await axios.put("/api/post/" + route.params.uuid, {
+          title: this.title,
+          content: this.article,
+          status: 'draft',
+        })
+        console.log("test");
         
-      // } catch (error: any) {
-      //   this.error = error.message;
-      //   console.log(error);
-      // }
+      } catch (error: any) {
+        this.error = error.message;
+        console.log(error);
+      }
     },
     async editArticle() {
       try {
