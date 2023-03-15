@@ -55,7 +55,7 @@ export default defineComponent({
           username: this.username,
           password: this.password,
         };
-        const response = await axios.post<User>('http://localhost:3333/api/auth/register', userCandidate, {
+        const response = await axios.post<User>("/api/auth/register", userCandidate, {
           headers: {
             'Accept': '*/*',
             "Access-Control-Allow-Credentials": true

@@ -6,26 +6,27 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ArticlesDetails from '../views/ArticlesDetails.vue'
 import EditArticle from '../views/Admin/EditArticles.vue'
+import Category from '../views/Admin/Category.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: Home,
   },
   {
     path: '/articles',
-    name: 'Articles',
+    name: 'articles',
     component: Articles,
   },
   {
     path: '/generate',
-    name: 'Generate',
+    name: 'generate',
     component: Generate,
   },
   {
     path: '/login',
-    name: 'Login',
+    name: 'login',
     component: Login,
   },
   {
@@ -42,7 +43,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/articles/edit/:uuid',
     name: 'editArticle',
     component: EditArticle
-  }
+  },
+  {
+    path: '/category',
+    name: 'category',
+    component: Category
+  },
   // {
   //   path: '/generer',
   //   name: 'Generer',
