@@ -45,8 +45,8 @@ const routes: Array<RouteRecordRaw> = [
     component: EditArticle
   },
   {
-    path: '/category',
-    name: 'category',
+    path: '/categories',
+    name: 'categories',
     component: Category
   },
   // {

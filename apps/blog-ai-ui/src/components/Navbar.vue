@@ -23,7 +23,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async someMethod() {
+    async UserConnected() {
       // Vérifier si l'utilisateur est authentifié
       const authenticated = await UserInfo();
       if (authenticated) {
@@ -32,7 +32,7 @@ export default defineComponent({
     },
   },
   async mounted() {
-    await this.someMethod()
+    await this.UserConnected()
   }
 });
 </script>
