@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@iconscout/vue-unicons": "^1.0.0",
     "@mdi/js": "^7.1.96",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
