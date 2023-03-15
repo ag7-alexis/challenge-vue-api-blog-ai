@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { User } from '@challenge-vue-api-blog-ai/shared';
+import { userInfo } from 'os';
 
 
 export async function UserInfo() {
@@ -11,8 +12,4 @@ export async function UserInfo() {
     } else {
         return false;
     }
-};
-
-export function isAuthenticated() {
-
 };
