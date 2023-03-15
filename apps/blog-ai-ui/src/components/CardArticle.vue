@@ -39,15 +39,18 @@
         <span>13/03</span>
       </v-card-actions>  
       <v-card-actions class="d-inline">
-        <RouterLink v-if="!admin" :to="{name:'articlesDetails',params:{uuid}}">Lire la suite</RouterLink>
-        <RouterLink v-if="admin" :to="{name:'editArticle',params:{uuid}}">Modifier</RouterLink>
-        <RouterLink v-if="admin" :to="{name:'articlesDetails',params:{uuid}}">Supprimer</RouterLink>
+        <RouterLink :to="{name:'articlesDetails',params:{uuid}}">Lire la suite</RouterLink>
+        <RouterLink v-if="isAuthenticated" :to="{name:'editArticle',params:{uuid}}"> <UilEdit   size="30px" class="trash text-red" /></RouterLink>
+        <RouterLink v-if="isAuthenticated" :to="{name:'articlesDetails',params:{uuid}}">    <UilTrash  size="30px" class="trash text-red" /></RouterLink>
       </v-card-actions>
     </v-card>
+    
   </template>
 
   <script lang="ts">
   import { defineComponent } from 'vue';
+  import { UserInfo } from '../auth';
+  import { UilTrash, UilEdit  } from '@iconscout/vue-unicons';
 
   export default defineComponent({
     name: 'CardArticle',
@@ -59,11 +62,28 @@
       uuid: String,
       thumbnail: String,
     },
+    components: {
+      UilTrash,
+      UilEdit,
+  },
     data() {
       return {
-        admin: true
+        admin: true,
+        isAuthenticated: false,
       }
-    }
+    },
+    methods: {
+    async UserConnected() {
+      // Vérifier si l'utilisateur est authentifié
+      const authenticated = await UserInfo();
+      if (authenticated) {
+        this.isAuthenticated = true;
+      }
+    },
+  },
+  async mounted() {
+    await this.UserConnected()
+  }
   });
   
   </script>

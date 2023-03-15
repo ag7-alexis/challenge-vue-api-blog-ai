@@ -5,7 +5,9 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "types": ["webpack-env", "node"],
-    "strict": true
+    "strict": true,
+    "noImplicitAny": false,
+    "allowJs": true,
   },
   "include": [],
   "files": [],

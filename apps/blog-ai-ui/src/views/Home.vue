@@ -5,6 +5,7 @@
     <v-container>
       <v-row>
         <v-col v-for="item in articles.data" :key="item.uuid" cols="12" sm="6">
+          <uil-vuejs size="180px" class="logo" />
 
           <CardArticle :title="item.title" :content="item.content" :categoryName="item.category.name" :uuid="item.uuid"
             :thumbnail="item.thumbnail" />
