@@ -79,3 +79,4 @@ export class PostService {
   generateText(title: string) {
     return this.openAi.generateText(title);
   }
+}
