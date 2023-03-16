@@ -19,12 +19,16 @@
           <option v-for="category in categories" :value="category.uuid">{{ category.name }}</option>
         </select>
 
+        <div>
+          <input type="file" @change="onFileChange" class="custom-input" accept="image/*">
+        </div>
+
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === ''" class="mt-4" block
+          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === '' || image === ''" class="mt-4" block
             @click="saveDraft">Enregistrer le brouillon</v-btn>
         </div>
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === ''" class="mt-4" block
+          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === '' || image === ''" class="mt-4" block
             @click="publishArticle">Publier</v-btn>
         </div>
       </v-form>
@@ -45,7 +49,8 @@ interface ViewContext {
   generating: boolean
   isDataLoading: boolean
   selectedCategory: string
-  categories: []
+  categories: [],
+  image: string
 }
 
 export default defineComponent({
@@ -60,6 +65,7 @@ export default defineComponent({
       isDataLoading: false,
       selectedCategory: '',
       categories: [],
+      image: ''
     };
   },
   methods: {
@@ -127,6 +133,15 @@ export default defineComponent({
       this.generating = false
     },
   },
+  async onFileChange(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64 = reader.result;
+        this.image = base64 as string
+      };
+    },
   async mounted() {
     await this.getAllCategories()
   },

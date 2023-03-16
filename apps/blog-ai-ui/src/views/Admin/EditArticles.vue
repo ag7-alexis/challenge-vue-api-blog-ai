@@ -18,11 +18,15 @@
           <option v-for="category in categories" :value="category.uuid">{{ category.name }}</option>
         </select>
 
+        <div>
+          <input type="file" @change="onFileChange" class="custom-input" accept="image/*">
+        </div>
+
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === ''" class="mt-4" block @click="saveDraft">Enregistrer le brouillon</v-btn>
+          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === '' || image === ''" class="mt-4" block @click="saveDraft">Enregistrer le brouillon</v-btn>
         </div>
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === ''" class="mt-4" block @click="editArticle">Appliquer les modifications</v-btn>
+          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === '' || image === ''" class="mt-4" block @click="editArticle">Appliquer les modifications</v-btn>
         </div>
         
       </v-form>
@@ -47,6 +51,7 @@ interface ViewContext {
   isDataLoading: boolean
   selectedCategory: string
   categories: []
+  image: string
 }
 
 export default defineComponent({
@@ -61,6 +66,7 @@ export default defineComponent({
       isDataLoading: false,
       selectedCategory: '',
       categories: [],
+      image: ''
     };
   },
   methods: {
@@ -76,6 +82,7 @@ export default defineComponent({
         // }
         this.title = data.title
         this.article = data.content
+        // this.selected = data.category
       } catch (error: any) {
         this.error = error.message
         console.log(error);
@@ -117,6 +124,8 @@ export default defineComponent({
           title: this.title,
           content: this.article,
           status: 'draft',
+          categoryUuid: this.selectedCategory,
+          thumbnail: this.image
         })
         this.generating = false
         window.location.href = "/articles"
@@ -135,6 +144,8 @@ export default defineComponent({
           title: this.title,
           content: this.article,
           status: 'published',
+          categoryUuid: this.selectedCategory,
+          thumbnail: this.image
         })
         this.generating = false
         window.location.href = "/articles"
@@ -143,6 +154,15 @@ export default defineComponent({
         console.log(error);
       }
       this.generating = false
+    },
+    async onFileChange(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64 = reader.result;
+        this.image = base64 as string
+      };
     },
   },
   async mounted() {
