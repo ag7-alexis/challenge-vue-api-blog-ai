@@ -28,7 +28,6 @@
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { Post } from '@challenge-vue-api-blog-ai/shared';
 
 export default defineComponent({
   name: 'EditArticles',

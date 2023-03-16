@@ -5,12 +5,18 @@ import {
   Post,
   present,
 } from '@challenge-vue-api-blog-ai/shared';
-import { JsonFileStorageService } from '@challenge-vue-api-blog-ai/shared-nest';
+import {
+  JsonFileStorageService,
+  OpenAiService,
+} from '@challenge-vue-api-blog-ai/shared-nest';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PostService {
-  constructor(private readonly storage: JsonFileStorageService) {}
+  constructor(
+    private readonly storage: JsonFileStorageService,
+    private readonly openAi: OpenAiService
+  ) {}
 
   retrieveOne(uuid: string): Post {
     const post = this.storage.retrieveOneBy<Post>('post', { uuid });
@@ -21,15 +27,28 @@ export class PostService {
     return post;
   }
 
-  retrieve(page: number = 0): Pagination<Post> {
-    return this.storage.retrieveBy<Post>('post', {}, page);
+  retrieve(page: number = 0, status?: 'published' | 'draft'): Pagination<Post> {
+    let filter: Partial<Post> = {};
+    if (present(status)) {
+      filter = { status };
+    }
+    return this.storage.retrieveBy<Post>('post', filter, page);
   }
 
-  retrieveInsideCategory(uuid: string): Pagination<Post> {
-    return this.storage.retrieveBy<Post>('post', { categoryUuid: uuid });
+  retrieveInsideCategory(
+    uuid: string,
+    page: number = 0,
+    status?: 'published' | 'draft'
+  ): Pagination<Post> {
+    let filter: Partial<Post> = { categoryUuid: uuid };
+    if (present(status)) {
+      filter = { ...filter, status };
+    }
+
+    return this.storage.retrieveBy<Post>('post', filter, page);
   }
 
-  create(postCandidate: Partial<Post>): Post {
+  async create(postCandidate: Partial<Post>): Promise<Post> {
     let category: Category | undefined = undefined;
 
     if (present(postCandidate.categoryUuid)) {
@@ -53,6 +72,7 @@ export class PostService {
         uuid: postCandidate.categoryUuid,
       });
     }
+
     return this.storage.upsertOne<Post>('post', {
       ...postCandidate,
       category,
@@ -67,5 +87,9 @@ export class PostService {
     }
 
     return models;
+  }
+
+  generateText(title: string) {
+    return this.openAi.generateText(title);
   }
 }

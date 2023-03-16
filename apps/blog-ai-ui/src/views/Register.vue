@@ -64,6 +64,7 @@ export default defineComponent({
 
         });
         this.success = response.data;
+        window.location.href = '/';
       } catch (error: any) {
         this.error = error.message;
         console.log(error);

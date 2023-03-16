@@ -2,6 +2,7 @@ import {
   absent,
   Category,
   Pagination,
+  Post,
   present,
 } from '@challenge-vue-api-blog-ai/shared';
 import { JsonFileStorageService } from '@challenge-vue-api-blog-ai/shared-nest';
@@ -75,7 +76,17 @@ export class CategoryService {
     if (false === deleted) {
       throw new NotFoundException();
     }
-
+    const posts = this.storage.retrieveAllBy<Post>('post', {
+      categoryUuid: uuid,
+    });
+    for (const post of posts) {
+      this.storage.upsertOne(post.uuid, {
+        ...post,
+        category: undefined,
+        categoryUuid: undefined,
+        status: 'draft',
+      });
+    }
     return models;
   }
 }

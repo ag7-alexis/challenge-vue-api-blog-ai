@@ -3,6 +3,7 @@
     <v-sheet width="300" class="mx-auto">
 
       <v-alert class="mt-4 mb-4" v-if="error" text="Nom d'utilisateur ou mot de passe incorrect"></v-alert>
+      <v-alert class="mt-4 mb-4" v-if="success" text="Vous êtes maintenant connecté"></v-alert>
 
       <v-form ref="form" @submit.prevent="login">
         <v-text-field v-model="username" label="Nom d'utilisateur" required></v-text-field>
@@ -33,13 +34,13 @@ export default defineComponent({
       password: '',
       error: null,
       loading: false,
+      success: null,
     };
   },
   methods: {
     async login() {
       this.loading = true;
       try {
-        console.log(this.username);
         const response = await axios.post("/api/auth/login", {
           username: this.username,
           password: this.password,
@@ -50,7 +51,8 @@ export default defineComponent({
           },
           withCredentials: true
         });
-
+        this.success = response.data;
+        window.location.href = '/';
       } catch (error) {
         this.error = error.message;
         console.log(error);

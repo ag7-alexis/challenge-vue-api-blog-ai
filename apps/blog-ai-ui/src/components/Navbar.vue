@@ -1,15 +1,41 @@
 <template>
-    <div class="header">
-        <router-link to="/" class="title">CHATBLOG</router-link>
-        <div class="nav">
-            <router-link to="/" class="button">Accueil</router-link>
-            <router-link to="/articles" class="button">Articles</router-link>
-            <!-- <router-link to="/generate" class="button">Générer</router-link> -->
-            <router-link to="/register" class="button-register">Créer un compte</router-link>
-            <router-link to="/login" class="button-login">Se connecter</router-link>
-        </div>
+  <div class="header">
+    <router-link to="/" class="title">CHATBLOG</router-link>
+    <div class="nav">
+      <router-link to="/" class="button">Accueil</router-link>
+      <router-link to="/articles" class="button">Articles</router-link>
+      <!-- <router-link to="/generate" class="button">Générer</router-link> -->
+      <router-link v-if="!isAuthenticated" to="/register" class="button-register">Créer un compte</router-link>
+      <router-link v-if="!isAuthenticated" to="/login" class="button-login">Se connecter</router-link>
     </div>
+  </div>
 </template>
+
+<script lang="ts">
+import axios from 'axios';
+import { defineComponent } from 'vue';
+import { UserInfo } from '../auth';
+
+export default defineComponent({
+  data() {
+    return {
+      isAuthenticated: false,
+    };
+  },
+  methods: {
+    async UserConnected() {
+      // Vérifier si l'utilisateur est authentifié
+      const authenticated = await UserInfo();
+      if (authenticated) {
+        this.isAuthenticated = true;
+      }
+    },
+  },
+  async mounted() {
+    await this.UserConnected()
+  }
+});
+</script>
 
 <style  lang="scss">
 .header {
@@ -69,4 +95,24 @@
   font-weight: bold;
   color: #ffffff;
 }
+
+@media screen and (max-width: 700px) {
+  .header{
+    display: inline-block !important;
+    text-align: center;
+    position: initial !important;
+    .nav {
+      display: inline-block;
+      a {
+        display: inline-block;
+        width: 100%;
+        margin: 0px 10px;
+      }
+    }
+  }
+  .router-view{
+    padding-top: 0px !important;
+  }
+}
+
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <Navbar v-if="!admin" />
-  <NavbarAdmin v-if="admin" />
+  <Navbar v-if="!isAuthenticated" />
+  <NavbarAdmin v-if="isAuthenticated" />
   <router-view class="router-view" />
 </template>
 
@@ -10,10 +10,12 @@ import axios from 'axios';
 import { defineComponent, ref } from 'vue';
 import Navbar from '../src/components/Navbar.vue';
 import NavbarAdmin from '../src/components/Admin/Navbar.vue';
+import { UserInfo } from './auth';
 
 interface ViewContext {
   user: User | undefined;
   admin: boolean
+  isAuthenticated: boolean;
 }
 
 export default defineComponent({
@@ -21,7 +23,8 @@ export default defineComponent({
   data(): ViewContext {
     return {
       user: undefined,
-      admin: false
+      admin: false,
+      isAuthenticated: false,
     };
   },
   components: {
@@ -29,20 +32,16 @@ export default defineComponent({
     NavbarAdmin
   },
   methods: {
-    async UserInfo() {
-      const isDataLoading = ref(true)
-
-      const userInfo = await axios.get<User>("/api/auth")
-      const { data, status } = userInfo // object destructuring FTW!
-      if (status === 200) {
-        isDataLoading.value = false
+    async UserConnected() {
+      // Vérifier si l'utilisateur est authentifié
+      const authenticated = await UserInfo();
+      if (authenticated) {
+        this.isAuthenticated = true;
       }
-      this.user = data
-      console.log(data);
     },
   },
   async mounted() {
-    await this.UserInfo()
+    await this.UserConnected()
   }
 });
 </script>
