@@ -1,5 +1,5 @@
 <template>
-  <div class="editArticles mt-5 mb-5">
+  <div class="generate mt-5 mb-5">
     <h2 class="text-black text-left ml-10 mt-10">Création d'un article</h2>
     <v-sheet width="600" class="mx-auto">
       <v-form ref="form" @submit.prevent="editArticle">
@@ -14,12 +14,6 @@
         <h3 class="text-black text-left mt-5">Article généré</h3>
         <v-textarea v-model="article" label="article" required></v-textarea>
 
-        <!-- <v-select
-        label="Selectionner une categorie"
-        :items="categories."
-        item-text="name"
-        ></v-select> -->
-
         <select id="category" v-model="selectedCategory" class="bg-indigo-lighten-2 pt-3 pb-3  pl-5 pr-3 rounded-xl">
           <option value="">Selectionner une catégorie</option>
           <option v-for="category in categories" :value="category.uuid">{{ category.name }}</option>
@@ -31,7 +25,7 @@
         </div>
         <div class="d-flex flex-row">
           <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
-            @click="editArticle">Publier</v-btn>
+            @click="publishArticle">Publier</v-btn>
         </div>
       </v-form>
     </v-sheet>
@@ -42,7 +36,7 @@
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { Category, Post, Pagination } from '@challenge-vue-api-blog-ai/shared';
+import { Post } from '@challenge-vue-api-blog-ai/shared';
 
 const route = useRoute();
 
@@ -52,12 +46,13 @@ interface ViewContext {
   error: any
   loading: boolean
   generating: boolean
+  isDataLoading: boolean
   selectedCategory: string
-  categories: Pagination<Category> | undefined
+  categories: []
 }
 
 export default defineComponent({
-  name: 'EditArticles',
+  name: 'Generate',
   data(): ViewContext {
     return {
       title: '',
@@ -65,26 +60,27 @@ export default defineComponent({
       error: null,
       loading: false,
       generating: false,
+      isDataLoading: false,
       selectedCategory: '',
-      categories: undefined,
+      categories: [],
     };
   },
   methods: {
+    // récupération de tous les articles
     async getAllCategories() {
+      this.generating = true
       try {
-        const GetCategory = await axios.get<Pagination<Category>>("/api/category")
+        const GetCategory = await axios.get("/api/category")
         const { data, status } = GetCategory
-        // if (status === 200) {
-        //       isDataLoading.value = false
-        //   }
         this.categories = data.data
-        console.log(data)
-      } catch (error) {
-        
+      } catch (error:any) {
+        this.error = error.message
+        console.log(error);
       }
+      this.generating = false
     },
+    // génération de l'article
     async generateArticle() {
-      // this.article = ''
       this.generating = true
       try {
         const response = await axios.post("/api/post/generate-text", {
@@ -97,31 +93,37 @@ export default defineComponent({
       }
       this.generating = false
     },
+    // enregistrement de l'article en brouillon
     async saveDraft() {
+      this.generating = true
       try {
         const response = await axios.post<Post>("/api/post/", {
           title: this.title,
           content: this.article,
           status: 'draft',
-          categoryUuid: '2f2e6a8f-de2c-4fef-a8af-46e4061b67ec'
+          categoryUuid: this.selectedCategory
         })
       } catch (error: any) {
         this.error = error.message;
         console.log(error);
       }
+      this.generating = false
     },
-    async editArticle() {
+    // validation des modifications de l'article
+    async publishArticle() {
+      this.generating = true
       try {
         const response = await axios.post<Post>("/api/post/", {
           title: this.title,
           content: this.article,
           status: 'published',
-          categoryUuid: '2f2e6a8f-de2c-4fef-a8af-46e4061b67ec'
+          categoryUuid: this.selectedCategory
         })
       } catch (error: any) {
         this.error = error.message;
         console.log(error);
       }
+      this.generating = false
     },
   },
   async mounted() {

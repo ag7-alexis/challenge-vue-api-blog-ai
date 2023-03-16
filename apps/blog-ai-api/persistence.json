@@ -32,6 +32,18 @@
         "name": "Test 132",
         "slug": "test-132"
       }
+    },
+    {
+      "uuid": "b4672944-d2df-486c-8f8f-5eacc50654bb",
+      "title": "les voitures volantes",
+      "content": "\n\nLes voitures volantes sont des véhicules qui font rêver depuis des décennies. Elles ont longtemps été considérées comme une technologie de science-fiction, mais aujourd'hui, plusieurs entreprises travaillent pour les rendre réalité.\n\nLes avancées technologiques des dernières années ont permis aux entreprises de se rapprocher de leur objectif. Les progrès en matière d'aérodynamique et de propulsion, ainsi que l'utilisation de matériaux plus légers, ont permis de réduire le poids des véhicules volants et d'augmenter leur efficacité.\n\nDes véhicules volants à propulsion électrique sont déjà disponibles sur le marché. Ces véhicules sont plus légers et moins chers que leurs homologues à moteur à combustion, et offrent une autonomie plus élevée. Ils sont également plus écologiques et plus silencieux.\n\nBien que les véhicules volants soient encore très chers, leur prix devrait diminuer à mesure que la technologie s'améliorera et que la demande augmentera. Les entreprises qui développent ces véhicules sont à la recherche de moyens de les rendre plus abordables et plus accessibles au grand public.\n\nLes voitures volantes offrent de nombreux avantages, notamment une meilleure mobilité et une plus grande liberté. Elles pourraient également réduire le nombre de accidents de la route, car elles n'utilisent pas les routes et n'ont pas à respecter les limites de vitesse.\n\nLes voitures volantes sont encore loin d'être une réalité, mais les progrès technologiques et les efforts des entreprises pour les rendre plus abordables et plus accessibles sont encourageants. Dans un avenir proche, il est possible que nous voyions de plus en plus de voitures volantes sur nos routes.",
+      "status": "published",
+      "categoryUuid": "46762ed2-41a4-4970-b987-60cb0fa82a85",
+      "category": {
+        "uuid": "46762ed2-41a4-4970-b987-60cb0fa82a85",
+        "name": "Voiture",
+        "slug": "Voiture"
+      }
     }
   ],
   "category": [
