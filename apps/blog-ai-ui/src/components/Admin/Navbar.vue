@@ -41,6 +41,7 @@ export default defineComponent({
   width: 100%;
   box-shadow: 0px 5px 40px grey;
   z-index: 1;
+  color: #fff;
 }
 
 .nav {

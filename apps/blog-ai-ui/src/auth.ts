@@ -5,11 +5,13 @@ import { userInfo } from 'os';
 
 export async function UserInfo() {
 
-    const userInfo = await axios.get<User>("/api/auth")
-    const { data, status } = userInfo // object destructuring FTW!
-    if (status === 200) {
+    try {
+      const userInfo = await axios.get("/api/auth");
+      const { data, status } = userInfo // object destructuring FTW!
+      console.log(data);
       return data;
-    } else {
-        return false;
+    } catch (error) {
+      return false;
     }
+
 };

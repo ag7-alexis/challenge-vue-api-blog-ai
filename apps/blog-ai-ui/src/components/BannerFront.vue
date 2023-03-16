@@ -3,9 +3,11 @@
     <img alt="Vue logo" src="../assets/logo_v2.png" :width="250" class="mt-10 mb-10" />
     <h1>{{ msg }}</h1>
 
+    <router-link to="/articles">
     <v-btn class="mt-8 p-4 mx-lg-auto">
       Je découvre les articles
     </v-btn>
+    </router-link>
 
   </div>
 </template>

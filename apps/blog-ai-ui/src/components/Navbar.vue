@@ -1,14 +1,15 @@
 <template>
-  <div class="header">
-    <router-link to="/" class="title">CHATBLOG</router-link>
-    <div class="nav">
-      <router-link to="/" class="button">Accueil</router-link>
-      <router-link to="/articles" class="button">Articles</router-link>
-      <!-- <router-link to="/generate" class="button">Générer</router-link> -->
-      <router-link v-if="!isAuthenticated" to="/register" class="button-register">Créer un compte</router-link>
-      <router-link v-if="!isAuthenticated" to="/login" class="button-login">Se connecter</router-link>
+    <div class="header">
+        <router-link to="/" class="title">CHATBLOG</router-link>
+        <div class="nav">
+            <router-link to="/" class="button">Accueil</router-link>
+            <router-link to="/articles" class="button">Articles</router-link>
+            <!-- <router-link to="/generate" class="button">Générer</router-link> -->
+            <router-link  v-if="!isAuthenticated" to="/register" class="button-register">Créer un compte</router-link>
+            <router-link v-if="!isAuthenticated" to="/login" class="button-login">Se connecter</router-link>
+            <router-link v-if="isAuthenticated" to="/login" class="button-login">Se déconnecter</router-link>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -47,6 +48,7 @@ export default defineComponent({
   width: 100%;
   box-shadow: 0px 5px 40px grey;
   z-index: 1;
+  color: #fff;
 }
 
 .nav {
@@ -94,4 +96,24 @@ export default defineComponent({
   font-weight: bold;
   color: #ffffff;
 }
+
+@media screen and (max-width: 700px) {
+  .header{
+    display: inline-block !important;
+    text-align: center;
+    position: initial !important;
+    .nav {
+      display: inline-block;
+      a {
+        display: inline-block;
+        width: 100%;
+        margin: 0px 10px;
+      }
+    }
+  }
+  .router-view{
+    padding-top: 0px !important;
+  }
+}
+
 </style>

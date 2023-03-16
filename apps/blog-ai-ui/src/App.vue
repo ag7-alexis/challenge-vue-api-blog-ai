@@ -53,7 +53,7 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   // text-align: center;
-  color: #ffffff;
+  color: #000;
 }
 
 .router-view {

@@ -60,9 +60,11 @@ export class PostController {
   delete(@Param('uuid') uuid: string) {
     return this.service.delete(uuid);
   }
-
+  
   @HttpPost('generate-text')
-  generateText(@Body() body: { title: string }) {
-    return this.service.generateText(body.title);
+  generateText(@Body() body: {title: string}) {
+    console.log(body.title, body, {...body});
+    
+    return this.service.generateText('Génère moi un article sur : '+ body.title);
   }
 }
