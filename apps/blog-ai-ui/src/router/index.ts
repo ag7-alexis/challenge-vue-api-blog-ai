@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import ArticlesDetails from '../views/ArticlesDetails.vue'
 import EditArticle from '../views/Admin/EditArticles.vue'
 import Category from '../views/Admin/Category.vue'
+import { UserInfo } from '../auth';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -23,6 +24,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/generate',
     name: 'Generate',
     component: Generate,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
@@ -42,12 +46,18 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/articles/edit/:uuid',
     name: 'editArticle',
-    component: EditArticle
+    component: EditArticle,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/categories',
     name: 'categories',
-    component: Category
+    component: Category,
+    meta: {
+      requiresAuth: true
+    }
   },
   // {
   //   path: '/generer',
@@ -64,5 +74,36 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+
+async function UserConnected() {
+  const authenticated = await UserInfo();
+  if (authenticated) {
+    return true;
+  }
+  return false;
+};
+
+
+router.beforeEach(async(to, from, next) => {
+
+  // Call the function to check if the user is authenticated
+  const isAuthenticated = await UserConnected();
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    console.log("dsq");
+    if (!isAuthenticated) {
+      console.log("dsq");
+      next({ name: 'Login' })
+    } else {
+      next() // go to wherever I'm going
+    }
+  } else {
+    next() // does not require auth, make sure to always call next()!
+  }
+})
+
+
 
 export default router;

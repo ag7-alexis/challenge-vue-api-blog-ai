@@ -7,7 +7,7 @@
       <option value="">Toutes</option>
       <option v-for="category in categories" :value="category.uuid">{{ category.name }}</option>
     </select>
-    <v-switch @change="filterArticles" v-model="switchDraft" class="text-black" label="Afficher les brouillons"></v-switch>
+    <v-switch @change="filterArticles" v-if="isAuthenticated" v-model="switchDraft" class="text-black" label="Afficher les brouillons"></v-switch>
       <v-row class="mt-5">
       <p  class="text-black" v-if="articles.data.length == 0">Il n'y pas encore d'article</p>
         <v-col v-for="item in articles.data" :key="item.uuid" cols="12" sm="6">
@@ -118,6 +118,7 @@ export default defineComponent({
       if (authenticated) {
         this.isAuthenticated = true;
       }
+     // console.log(this.isAuthenticated);
     },
   },
   async mounted() {

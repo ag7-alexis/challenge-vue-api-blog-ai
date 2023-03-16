@@ -6,7 +6,7 @@
       </div>
       <v-container class="text-black text-left mt-8 mb-8">
         <v-row>
-        <v-col v-for="item in category.data" :key="item.uuid" cols="12">
+        <v-col v-for="item in category.data" :key="item.uuid" cols="4">
           <v-card
               class="pl-5"
               max-width="300"
