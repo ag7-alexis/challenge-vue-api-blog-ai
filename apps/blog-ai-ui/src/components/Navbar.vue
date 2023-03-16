@@ -94,4 +94,24 @@ export default defineComponent({
   font-weight: bold;
   color: #ffffff;
 }
+
+@media screen and (max-width: 700px) {
+  .header{
+    display: inline-block !important;
+    text-align: center;
+    position: initial !important;
+    .nav {
+      display: inline-block;
+      a {
+        display: inline-block;
+        width: 100%;
+        margin: 0px 10px;
+      }
+    }
+  }
+  .router-view{
+    padding-top: 0px !important;
+  }
+}
+
 </style>
