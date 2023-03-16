@@ -1,6 +1,6 @@
 <template>
   <div class="editArticles mt-5 mb-5">
-    <h2 class="text-black text-left ml-10 mt-10">Modification de l'article</h2>
+    <h2 class="text-black text-left ml-10 mt-10">Création d'un article</h2>
     <v-sheet width="600" class="mx-auto">
       <v-form ref="form" @submit.prevent="editArticle">
         <h3 class="text-black text-left mt-10">Titre de l'article</h3>
@@ -20,7 +20,7 @@
         </div>
         <div class="d-flex flex-row">
           <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
-            @click="editArticle">Appliquer les modifications</v-btn>
+            @click="editArticle">Publier</v-btn>
         </div>
       </v-form>
     </v-sheet>
@@ -28,38 +28,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { absent, Post, present } from '@challenge-vue-api-blog-ai/shared';
+import { Category, Post, Pagination } from '@challenge-vue-api-blog-ai/shared';
 
 const route = useRoute();
-console.log(route)
+
+interface ViewContext {
+  title: string
+  article: string
+  error: any
+  loading: boolean
+  generating: boolean
+  categories: Pagination<Category> | undefined
+}
 
 export default defineComponent({
   name: 'EditArticles',
-  data() {
+  data(): ViewContext {
     return {
       title: '',
       article: '',
       error: null,
       loading: false,
       generating: false,
+      categories: undefined,
     };
   },
   methods: {
-    async getArticle() {
-      const isDataLoading = ref(true)
-      const route = useRoute()
-
-      const GetArticle = await axios.get<Post>('/api/post/' + route.params.uuid)
-      const { data, status } = GetArticle // object destructuring FTW!
-      if (status === 200) {
-        isDataLoading.value = false
+    async getAllCategories() {
+      try {
+        const GetCategory = await axios.get<Pagination<Category>>("/api/category")
+        const { data, status } = GetCategory
+        // if (status === 200) {
+        //       isDataLoading.value = false
+        //   }
+        // this.categories = data
+        console.log(data.data)
+      } catch (error) {
+        
       }
-      console.log(data);
-      this.title = data.title
-      this.article = data.content
     },
     async generateArticle() {
       // this.article = ''
@@ -77,13 +86,12 @@ export default defineComponent({
     },
     async saveDraft() {
       try {
-        const response = await axios.put("/api/post/" + this.$route.params.uuid, {
+        const response = await axios.post<Post>("/api/post/", {
           title: this.title,
           content: this.article,
           status: 'draft',
+          categoryUuid: '2f2e6a8f-de2c-4fef-a8af-46e4061b67ec'
         })
-        console.log("test");
-
       } catch (error: any) {
         this.error = error.message;
         console.log(error);
@@ -91,10 +99,11 @@ export default defineComponent({
     },
     async editArticle() {
       try {
-        const response = await axios.put("/api/post/" + this.$route.params.uuid, {
+        const response = await axios.post<Post>("/api/post/", {
           title: this.title,
           content: this.article,
           status: 'published',
+          categoryUuid: '2f2e6a8f-de2c-4fef-a8af-46e4061b67ec'
         })
       } catch (error: any) {
         this.error = error.message;
@@ -103,7 +112,7 @@ export default defineComponent({
     },
   },
   async mounted() {
-    await this.getArticle()
+    await this.getAllCategories()
   },
 })
 </script>
