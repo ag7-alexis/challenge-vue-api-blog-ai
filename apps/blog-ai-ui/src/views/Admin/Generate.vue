@@ -14,6 +14,17 @@
         <h3 class="text-black text-left mt-5">Article généré</h3>
         <v-textarea v-model="article" label="article" required></v-textarea>
 
+        <!-- <v-select
+        label="Selectionner une categorie"
+        :items="categories."
+        item-text="name"
+        ></v-select> -->
+
+        <select id="category" v-model="selectedCategory" class="bg-indigo-lighten-2 pt-3 pb-3  pl-5 pr-3 rounded-xl">
+          <option value="">Selectionner une catégorie</option>
+          <option v-for="category in categories" :value="category.uuid">{{ category.name }}</option>
+        </select>
+
         <div class="d-flex flex-row">
           <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
             @click="saveDraft">Enregistrer le brouillon</v-btn>
@@ -41,6 +52,7 @@ interface ViewContext {
   error: any
   loading: boolean
   generating: boolean
+  selectedCategory: string
   categories: Pagination<Category> | undefined
 }
 
@@ -53,6 +65,7 @@ export default defineComponent({
       error: null,
       loading: false,
       generating: false,
+      selectedCategory: '',
       categories: undefined,
     };
   },
@@ -64,8 +77,8 @@ export default defineComponent({
         // if (status === 200) {
         //       isDataLoading.value = false
         //   }
-        // this.categories = data
-        console.log(data.data)
+        this.categories = data.data
+        console.log(data)
       } catch (error) {
         
       }
