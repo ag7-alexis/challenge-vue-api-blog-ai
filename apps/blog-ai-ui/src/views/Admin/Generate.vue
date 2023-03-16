@@ -2,7 +2,7 @@
   <div class="generate mt-5 mb-5">
     <h2 class="text-black text-left ml-10 mt-10">Création d'un article</h2>
     <v-sheet width="600" class="mx-auto">
-      <v-form ref="form" @submit.prevent="editArticle">
+      <v-form ref="form" @submit.prevent="generateArticle">
         <h3 class="text-black text-left mt-10">Titre de l'article</h3>
         <v-text-field v-model="title" label="titre" required></v-text-field>
 
@@ -20,11 +20,11 @@
         </select>
 
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
+          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === ''" class="mt-4" block
             @click="saveDraft">Enregistrer le brouillon</v-btn>
         </div>
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
+          <v-btn color="success" :disabled="title === '' || article === '' || selectedCategory === ''" class="mt-4" block
             @click="publishArticle">Publier</v-btn>
         </div>
       </v-form>
@@ -35,10 +35,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router';
 import { Post } from '@challenge-vue-api-blog-ai/shared';
-
-const route = useRoute();
 
 interface ViewContext {
   title: string
@@ -52,7 +49,7 @@ interface ViewContext {
 }
 
 export default defineComponent({
-  name: 'Generate',
+  name: 'GenerateArticle',
   data(): ViewContext {
     return {
       title: '',
@@ -103,6 +100,8 @@ export default defineComponent({
           status: 'draft',
           categoryUuid: this.selectedCategory
         })
+        this.generating = false
+        window.location.href = "/articles"
       } catch (error: any) {
         this.error = error.message;
         console.log(error);
@@ -119,6 +118,8 @@ export default defineComponent({
           status: 'published',
           categoryUuid: this.selectedCategory
         })
+        this.generating = false
+        window.location.href = "/articles"
       } catch (error: any) {
         this.error = error.message;
         console.log(error);

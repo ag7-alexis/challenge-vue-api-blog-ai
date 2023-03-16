@@ -1,14 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="header">
-    <router-link to="/" class="title">CHATBLOG</router-link>
-    <div class="nav">
-      <router-link to="/" class="button">Accueil</router-link>
-      <router-link to="/articles" class="button">Articles</router-link>
-      <!-- <router-link to="/generate" class="button">Générer</router-link> -->
-      <router-link v-if="!isAuthenticated" to="/register" class="button-register">Créer un compte</router-link>
-      <router-link v-if="!isAuthenticated" to="/login" class="button-login">Se connecter</router-link>
-=======
     <div class="header">
         <router-link to="/" class="title">CHATBLOG</router-link>
         <div class="nav">
@@ -19,9 +9,7 @@
             <router-link v-if="!isAuthenticated" to="/login" class="button-login">Se connecter</router-link>
             <router-link v-if="isAuthenticated" to="/login" class="button-login">Se déconnecter</router-link>
         </div>
->>>>>>> front-leo
     </div>
-  </div>
 </template>
 
 <script lang="ts">
