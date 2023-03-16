@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
 import Articles from '../views/Articles.vue'
-import Generate from '../views/Generate.vue'
+import Generate from '../views/Admin/Generate.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ArticlesDetails from '../views/ArticlesDetails.vue'

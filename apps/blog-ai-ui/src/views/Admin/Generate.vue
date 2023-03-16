@@ -1,13 +1,14 @@
 <template>
-  <div class="editArticles mt-5 mb-5">
-    <h2 class="text-black text-left ml-10 mt-10">Modification de l'article</h2>
+  <div class="generate mt-5 mb-5">
+    <h2 class="text-black text-left ml-10 mt-10">Création d'un article</h2>
     <v-sheet width="600" class="mx-auto">
       <v-form ref="form" @submit.prevent="editArticle">
         <h3 class="text-black text-left mt-10">Titre de l'article</h3>
-        <v-text-field v-model="title" label="Titre" required></v-text-field>
+        <v-text-field v-model="title" label="titre" required></v-text-field>
 
         <div class="d-flex flex-row">
-          <v-btn color="success" class="mt-4" :disabled="title === ''" block @click="saveDraft">Générer un article</v-btn>
+          <v-btn color="success" class="mt-4" :disabled="title === ''" block @click="generateArticle">Générer un
+            article</v-btn>
         </div>
 
         <h3 class="text-black text-left mt-5">Article généré</h3>
@@ -19,10 +20,12 @@
         </select>
 
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block @click="saveDraft">Enregistrer le brouillon</v-btn>
+          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
+            @click="saveDraft">Enregistrer le brouillon</v-btn>
         </div>
         <div class="d-flex flex-row">
-          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block @click="editArticle">Appliquer les modifications</v-btn>
+          <v-btn color="success" :disabled="title === '' || article === ''" class="mt-4" block
+            @click="publishArticle">Publier</v-btn>
         </div>
       </v-form>
     </v-sheet>
@@ -34,7 +37,6 @@ import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { Post } from '@challenge-vue-api-blog-ai/shared';
-import router from '../../router';
 
 const route = useRoute();
 
@@ -50,7 +52,7 @@ interface ViewContext {
 }
 
 export default defineComponent({
-  name: 'EditArticles',
+  name: 'Generate',
   data(): ViewContext {
     return {
       title: '',
@@ -64,30 +66,13 @@ export default defineComponent({
     };
   },
   methods: {
-    // récupération de l'article
-    async getArticle() {
-      const route = useRoute();
-      this.generating = true
-      try {
-        const GetArticle = await axios.get<Post>('/api/post/' + route.params.uuid)
-        const { data, status } = GetArticle // object destructuring FTW!
-        // if (status === 200) {
-        //     generating.value = false
-        // }
-        this.title = data.title
-        this.article = data.content
-      } catch (error: any) {
-        this.error = error.message
-        console.log(error);
-      }
-    },
     // récupération de tous les articles
     async getAllCategories() {
       this.generating = true
       try {
         const GetCategory = await axios.get("/api/category")
         const { data, status } = GetCategory
-        this.categories = data.data        
+        this.categories = data.data
       } catch (error:any) {
         this.error = error.message
         console.log(error);
@@ -112,12 +97,12 @@ export default defineComponent({
     async saveDraft() {
       this.generating = true
       try {
-        const response = await axios.put("/api/post/" + route.params.uuid, {
+        const response = await axios.post<Post>("/api/post/", {
           title: this.title,
           content: this.article,
           status: 'draft',
+          categoryUuid: this.selectedCategory
         })
-        this.generating = false
       } catch (error: any) {
         this.error = error.message;
         console.log(error);
@@ -125,13 +110,14 @@ export default defineComponent({
       this.generating = false
     },
     // validation des modifications de l'article
-    async editArticle() {
+    async publishArticle() {
       this.generating = true
       try {
-        const response = await axios.put("/api/post/" + route.params.uuid, {
+        const response = await axios.post<Post>("/api/post/", {
           title: this.title,
           content: this.article,
           status: 'published',
+          categoryUuid: this.selectedCategory
         })
       } catch (error: any) {
         this.error = error.message;
@@ -141,7 +127,6 @@ export default defineComponent({
     },
   },
   async mounted() {
-    await this.getArticle()
     await this.getAllCategories()
   },
 })
