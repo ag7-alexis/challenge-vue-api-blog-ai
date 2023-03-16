@@ -12,17 +12,17 @@ import { UserInfo } from '../auth';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: Home,
   },
   {
     path: '/articles',
-    name: 'articles',
+    name: 'Articles',
     component: Articles,
   },
   {
     path: '/generate',
-    name: 'generate',
+    name: 'Generate',
     component: Generate,
     meta: {
       requiresAuth: true
@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Login,
   },
   {
@@ -94,8 +94,7 @@ router.beforeEach(async(to, from, next) => {
     // if not, redirect to login page.
     console.log("dsq");
     if (!isAuthenticated) {
-      console.log("dsq");
-      next({ name: 'Login' })
+      window.location.href = "/login";
     } else {
       next() // go to wherever I'm going
     }
